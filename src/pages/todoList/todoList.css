@@ -1,0 +1,31 @@
+.wrapper {
+    margin: 20% 20%;
+    background-color: aquamarine;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.body {
+    margin-top: 1em;
+    border-top: 1px solid black;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+}
+
+li {
+    display:  flex;
+    justify-content: space-between;
+}
+
+.footer {
+    display:  flex;
+    justify-content: space-between;
+    margin-top: 1em;
+    border-top: 1px solid black;
+}
