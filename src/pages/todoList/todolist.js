@@ -11,8 +11,9 @@ export default function TodoList() {
     { id: 3, content: "睡觉" }
   ]
   );
-
+  const list = state;
   function reducer(state, action) {
+    console.log('action.index: ', action.index);
     switch (action.type) {
       case "add":
         if (userInput.current.value !== "") {
@@ -35,6 +36,7 @@ export default function TodoList() {
           ]
         )
     }
+
   }
 
   const handleKey = (e) => {
@@ -43,7 +45,16 @@ export default function TodoList() {
     }
   }
 
-  const list = state;
+  const handleMouse = (flag) => {
+    return (e) => {
+      const flag1 = flag - 1;
+      if (e.target.id == flag1) {
+        setShowBtn(true)
+      }
+    }
+  }
+
+
   return (
     <>
       <div className="wrapper">
@@ -70,8 +81,9 @@ export default function TodoList() {
               (iterm, index) => {
                 return (
                   <li key={iterm.id}
-                    onMouseEnter={() => setShowBtn(true)}
-                    onMouseLeave={() => setShowBtn(false)}
+                    id={index}
+                    onMouseEnter={handleMouse(iterm.id)}
+                    onMouseLeave={handleMouse(iterm.id)}
                     style={{ backgroundColor: showBtn ? "gray" : "white" }}
                   >
                     <label>
@@ -80,7 +92,7 @@ export default function TodoList() {
                     </label>
                     <button id={index}
                       onClick={(e) => { dispatch({ type: "dec", index }) }}
-                      style={{ display: showBtn ? "block" : "none" }}
+                      style={{ opacity: showBtn ? 1 : 0 }}
                     >
                       删除</button>
                   </li>
