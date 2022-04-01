@@ -10,14 +10,80 @@
   <!-- 下面的意思是苹果手机添加到网页主屏幕时的显示图标 -->
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <!-- 应用加壳时候的配置 -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <title>方</title>
+  <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.26.1/axios.min.js"></script>
+  <title>search案例</title>
+  <style>
+    body {
+      margin: 0 auto;
+      width: 100vw;
+    }
+
+    #root {
+      margin: 0 auto;
+      width: 100%;
+      border: 1px solid black;
+    }
+  </style>
 </head>
 
 <body>
   <!-- no script 这句话的意思是如果浏览器不支持JS,那么就会展示这个标签时的内容 -->
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+  <!-- <button>get</button>
+  <button>post</button>
+  <button>put</button>
+  <button>登陆</button>
+  <script>
+    const btn = document.querySelectorAll("button");
+    axios.defaults.baseURL = 'http://localhost:3000'
+    btn[0].onclick = function () {
+      axios({
+        method: 'get',
+        url: '/posts/2'
+      }).then(response => {
+        console.log(response)
+      })
+    }
+
+    btn[1].onclick = function () {
+      axios(
+        {
+          method: 'POST',
+          url: 'http://localhost:3000/posts',
+          data: {
+            titile: 'hanzhenfang',
+            author: '何必酒'
+          }
+        }
+      ).then((resolve) => {
+        console.log(resolve)
+      })
+    }
+
+    btn[2].onclick = function () {
+      axios({
+        method: 'put',
+        url: 'http://localhost:3000/posts/3',
+        data: {
+          title: "小鹿"
+        }
+      })
+    }
+    btn[3].onclick = function () {
+      axios.get(
+        'http://localhost:3000/posts/1',
+      ).then((resolve) => {
+        console.log(resolve.data.author)
+        const password = window.prompt("输入密码");
+        if (resolve.data.author !== password) {
+          alert("密码错误")
+        }
+        else alert("登陆成功")
+      })
+    } -->
+  <!-- </script> -->
 </body>
 
 </html>

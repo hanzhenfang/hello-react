@@ -1,0 +1,33 @@
+{
+    "posts": [
+        {
+            "id": 1,
+            "title": "xx",
+            "author": "password"
+        },
+        {
+            "id": 2,
+            "title": "xiaofang",
+            "author": "xxxxx"
+        },
+        {
+            "title": "小鹿",
+            "id": 3
+        },
+        {
+            "titile": "hanzhenfang",
+            "author": "何必酒",
+            "id": 4
+        }
+    ],
+    "comments": [
+        {
+            "id": 1,
+            "body": "some comment",
+            "postId": 1
+        }
+    ],
+    "profile": {
+        "name": "typicode"
+    }
+}

@@ -1,0 +1,11 @@
+.cardBox {
+    display: grid;
+    grid-template-columns: repeat(3,110px);
+    row-gap: 10px;
+}
+
+.card {
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;
+}
