@@ -1,30 +1,33 @@
 import React from 'react';
-import List from './list/index'
-import SearchHeader from './searchHeader/index'
-import { useState } from 'react'
+import { NavLink, HashRouter as Router, Route, Routes } from 'react-router-dom'
+import Home from './components/home/index'
+import About from './components/about/index'
+import Footer from './components/footer';
 
 function App() {
-  const [users, setUsers] = useState([])
-  const [firstIn, setFirstIn] = useState(true)
-  const [loding, setLoding] = useState(false)
-
 
   return (
     <>
-      <div style={{ margin: "0 auto", width: "50%" }}>
-        <SearchHeader
-          setUsers={setUsers}
-          setFirstIn={setFirstIn}
-          setLoding={setLoding}
-        />
+      <Router>
+        <h1>欢迎来到我的网站</h1>
+        <div>
+          <h2>导航栏</h2>
+          <NavLink to='/hanzhenfang/about'>About</NavLink>
+          <br />
+          <NavLink to='/hanzhenfang/home'>Home</NavLink>
+        </div>
 
+        <div>
+          <h2>展示区</h2>
 
-        <List
-          users={users}
-          firstIn={firstIn}
-          loding={loding}
-        />
-      </div>
+          <Routes>
+            <Route path='/hanzhenfang/about' element={<About />} />
+            <Route path='/hanzhenfang/home' element={<Footer />} />
+            <Route path='/hanzhenfang/home' element={<Home />} />
+          </Routes>
+
+        </div>
+      </Router>
     </>
   );
 }
