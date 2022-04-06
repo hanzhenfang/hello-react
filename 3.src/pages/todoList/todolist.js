@@ -1,6 +1,7 @@
 import React from "react";
-import './todoList.css';
 import { useReducer, useRef } from "react";
+
+import './todoList.css';
 
 export default function TodoList() {
   const userInput = useRef(null);
@@ -37,7 +38,6 @@ export default function TodoList() {
         throw console.error("错误");
       }
     }
-
   }
 
   // 敲回车触发的事件
@@ -52,6 +52,7 @@ export default function TodoList() {
   const handleMouseEnter = (e) => {
     const id = e.target.id
     const li = document.getElementById(id)
+    console.log('li');
     li.style.backgroundColor = "pink";
     li.querySelector("button").style.opacity = "1";
   }
@@ -63,7 +64,6 @@ export default function TodoList() {
     li.style.backgroundColor = "white";
     li.querySelector("button").style.opacity = "0";
   }
-
 
   return (
     <>
@@ -102,6 +102,7 @@ export default function TodoList() {
                   //注意，这里的key的值不建议使用index，diff算法会重新渲染所有列表，会影响性能
                   <li key={iterm.id}
                     id={index}
+                    className
                     style={{ backgroundColor: "white" }}
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
@@ -143,5 +144,3 @@ export default function TodoList() {
     </>
   )
 }
-
-
