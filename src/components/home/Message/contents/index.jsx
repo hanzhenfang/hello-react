@@ -1,16 +1,23 @@
 import React from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
-const data = [
-    { id: 1, detail: "你的名字" },
-    { id: 2, detail: "是我见过" },
-    { id: 3, detail: "最短的情书❤️" },
+export default function Contents() {
+    const { state: { id, content } } = useLocation(); //结构赋值
+    const navigate = useNavigate();
 
-]
-export default function Contents(props) {
-    console.log(props)
+    const back = () => {
+        navigate(-1);
+    }
+    const forward = () => {
+        navigate(1);
+    }
+
     return (
         <>
-            <p>明天去看海</p>
+            <button onClick={back}>后退</button>
+            <button onClick={forward}>前进</button>
+            <p>{id}</p>
+            <p>{content}</p>
         </>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, NavLink, Routes, Route } from 'react-router-dom'
+import { NavLink, Routes, Route } from 'react-router-dom'
 
 import News from './News/index'
 import Message from './Message/index'
