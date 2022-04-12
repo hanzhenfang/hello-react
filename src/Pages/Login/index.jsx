@@ -1,8 +1,7 @@
-import React from 'react';
-import { useRef } from 'react';
+import React, { useEffect } from 'react';
 import { notification } from 'antd';
+import { useForm } from 'react-hook-form'
 import axios from 'axios';
-import { Link as ReactLink, useNavigate as navigate } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -17,158 +16,173 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import SignIn from '../SignIn';
 
 function Copyright() {
-    return (
-        <Typography variant="body2" color="textSecondary" align="center">
-            {'PoweredBy © '}
-            <Link color="inherit" href="https://mui.com/">      {/*页脚相关内容*/}
-                小方xxx待定平台
-            </Link>{' '}
-            {new Date().getFullYear()}
-            {'.'}
-        </Typography>
-    );
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'PoweredBy © '}
+      <Link color="inherit" href="https://mui.com/">      {/*页脚相关内容*/}
+        小方xxx待定平台
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }
 
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
 }));
 
-function debounce(fn, delay) { //设置防抖方法来防止用户疯狂点击登陆
-    let timerID = false
-    return function () {
-        if (timerID) {
-            clearTimeout(timerID);
-        }
-        timerID = setTimeout(() => {
-            fn();
-        }, delay)
-    }
-}
+// function debounce(fn, delay) { //设置防抖方法来防止用户疯狂点击登陆
+//   let timerID = false
+//   return function () {
+//     if (timerID) {
+//       clearTimeout(timerID);
+//     }
+//     timerID = setTimeout(() => {
+//       fn();
+//     }, delay)
+//   }
+// }
 
 export default function Login(props) {
-    const classes = useStyles();
-    const userName = useRef()
-    const passWord = useRef()
-    const submit = () => {
-        console.log(userName.current.value)
-        //可以有一个timeout参数来设置请求时间，如果超时修改promise的状态为reject
-        axios.get('http://localhost:5500/server', { timeout: 3000 }).then(
-            (response) => {
-                console.log(response)
-                const user = response.data.login
-                if (userName.current.value === user.username
-                    && passWord.current.value === user.password) {
-                    notification['success']({
-                        message: "登陆成功",
-                        description: "如果喜欢该网页就推荐给你的朋友们吧～❤️",
-                        duration: 1
-                    });
-                    setTimeout(() => { props.setIfLogin(true) }, 2000)
+  const { register, handleSubmit, formState: { errors } } = useForm()
+  const classes = useStyles()
 
-                }
-                else {
-                    notification['error']({
-                        message: "登陆失败",
-                        description: "请核对用户名信息和密码是否正确"
-                    });
-                    return new Promise(() => { })   //当密码错误的时候，返回一个空promise来中断后续.then方法的执行
-                }
-            },
-            (reason) => {
-                notification['error']({
-                    message: "请求超时",
-                    description: "服务器开小差了"
-                })
-            }
-
-        ).then((a) => {
-            console.log(a)
+  const submit = (userInfo) => {
+    console.log(userInfo)
+    //可以有一个timeout参数来设置请求时间，如果超时修改promise的状态为reject
+    axios.get('http://localhost:5500/server', { timeout: 3000 }).then(
+      (response) => {
+        console.log(response)
+        const user = response.data.login
+        if (userInfo.userName === user.username
+          && userInfo.passWord === user.password) {
+          notification['success']({
+            message: "登陆成功",
+            description: "如果喜欢该网页就推荐给你的朋友们吧～❤️",
+            duration: 1
+          });
+          setTimeout(() => {
+            console.log(props)
+            props.setIfLogin("home")
+          }, 1000);
+        }
+        else {
+          notification['error']({
+            message: "登陆失败",
+            description: "请核对用户名信息和密码是否正确"
+          });
+          return new Promise(() => { })   //当密码错误的时候，返回一个空promise来中断后续.then方法的执行
+        }
+      },
+      (reason) => {
+        notification['error']({
+          message: "请求超时",
+          description: "服务器开小差了"
         })
-    }
+      }
 
-    return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Avatar className={classes.avatar}>
-                    <LockOutlinedIcon />
-                </Avatar>
-                <Typography component="h1" variant="h3">
-                    登陆页面
-                </Typography>
-                <form className={classes.form} noValidate>
-                    <TextField
-                        inputRef={userName}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="用户名"
-                        name="username"
-                        autoFocus
-                    />
-                    <TextField
-                        inputRef={passWord}
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                    />
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="记住账号密码"
-                    />
-                    <Button
-                        type="button"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={debounce(submit, 1500)}
-                    >
-                        登陆
-                    </Button>
-                    <Grid container>
-                        <Grid item xs>
-                            <Link href="#" variant="body2">
-                                忘记密码？
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                            <Link href="../SignIn/index.jsx" variant="body2">
-                                没有账号？点击注册
-                            </Link>
-                        </Grid>
-                    </Grid>
-                </form>
-            </div>
-            <Box mt={8}>
-                <Copyright />
-            </Box>
-        </Container>
-    );
+    ).then((a) => {
+      console.log(a)  //上一个.then成功的话会返回一个reserve状态的promise对象，如果没有设置返回值，那么返回值默认上undifined
+    })
+  }
+
+  return (
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Avatar className={classes.avatar}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h3">
+          登陆页面
+        </Typography>
+        <form
+          className={classes.form}
+          onSubmit={handleSubmit(submit)}
+          noValidate
+        >
+          <TextField
+            id="userName"
+            label="用户名"
+            {...register("userName",//使用r-h-f自动注册name属性和input的value
+              {
+                required: "请输入用户名",
+                minLength: { value: 5, message: "用户名至少为5位" },
+                maxLength: { value: 6, message: "用户名最大为6个字符" },
+                pattern: { value: /^[a-z]+$/, message: "用户名必须为小写英文" }
+              })}
+            helperText={errors.userName?.message}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+            autoFocus
+          />
+
+          <TextField
+            label="Password"
+            type="password"
+            id="password"
+            {...register("passWord",//使用r-h-f自动注册name属性和input的value
+              {
+                required: "请先输入密码",
+                minLength: { value: 5, message: "密码至少为5位" },
+                maxLength: { value: 8, message: "密码最多为8位" },
+                pattern: { value: /^[a-z]+$/, message: "密码必须为小写英文" }
+              })}
+            helperText={errors.passWord?.message}
+            variant="outlined"
+            margin="normal"
+            fullWidth
+          />
+          <FormControlLabel
+            control={<Checkbox value="remember" color="primary" />}
+            label="记住账号密码"
+          />
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            登陆
+          </Button>
+          <Grid container>
+            <Grid item xs>
+              <Link href="#" variant="body2">
+                忘记密码？
+              </Link>
+            </Grid>
+            <Grid item>
+              <Link href="../SignIn/index.jsx" variant="body2">
+                没有账号？点击注册
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      </div>
+      <Box mt={8}>
+        <Copyright />
+      </Box>
+    </Container>
+  );
 }

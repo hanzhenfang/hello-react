@@ -3,7 +3,7 @@ const express = require('express');
 const app = express();
 
 app.get('/server', (request, response) => {
-  // 设置相应头允许跨域
+  // 设置响应头允许跨域
   response.setHeader('Access-Control-Allow-Origin', '*');
 
   response.send(
