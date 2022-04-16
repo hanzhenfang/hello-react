@@ -8,9 +8,14 @@
 //     }
 // });
 
-let obj = new Object();
-obj.name = "ss";
-let obj2 = obj;
-obj2.name = "xxx";
-obj2 = null;
-console.log(obj, obj2)
+const fs = require("fs");
+
+// fs.writeFile('./hello.txt', "吴彦祖", { flag: "a" }, (erro) => {
+//     if (erro) {
+//         console.log(erro)
+//     }
+// })
+
+fs.readdir(".", (erro, data) => {
+    console.log(data);
+})

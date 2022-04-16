@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { notification } from 'antd';
 import { useForm } from 'react-hook-form'
 import axios from 'axios';
+import { useNavigate, Link as RLink } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -16,6 +17,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+
+import memoryUtils from '../../Utils/memoryUtils';
+import storageUtiles from '../../Utils/storageUtiles';
 
 function Copyright() {
   return (
@@ -65,9 +69,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Login(props) {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const classes = useStyles()
+  const navigate = useNavigate()
 
   const submit = (userInfo) => {
-    console.log(userInfo)
+    console.log(navigate)
     //可以有一个timeout参数来设置请求时间，如果超时修改promise的状态为reject
     axios.get('http://localhost:5500/server', { timeout: 3000 }).then(
       (response) => {
@@ -80,10 +85,13 @@ export default function Login(props) {
             description: "如果喜欢该网页就推荐给你的朋友们吧～❤️",
             duration: 1
           });
+          memoryUtils.user = userInfo; //将变量引入内存中
+          storageUtiles.saveUser(userInfo); //调用saveUser方法将用户信息保存到浏览器中
+
           setTimeout(() => {
-            console.log(props)
-            props.setIfLogin("home")
-          }, 1000);
+            navigate('/dashboard', { replace: true })
+          }, 1000)
+
         }
         else {
           notification['error']({
@@ -101,7 +109,10 @@ export default function Login(props) {
       }
 
     ).then((a) => {
-      console.log(a)  //上一个.then成功的话会返回一个reserve状态的promise对象，如果没有设置返回值，那么返回值默认上undifined
+      console.log(a)
+      return 3;  //上一个.then成功的话会返回一个reserve状态的promise对象，如果没有设置返回值，那么返回值默认上undifined
+    }).then((a) => {
+      console.log(a)
     })
   }
 
@@ -167,13 +178,13 @@ export default function Login(props) {
             登陆
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
+            {/* <Grid item xs>
+              <Link component={RLink} to='/' variant="body2">
                 忘记密码？
               </Link>
-            </Grid>
+            </Grid> */}
             <Grid item>
-              <Link href="../SignIn/index.jsx" variant="body2">
+              <Link component={RLink} to='/signin' variant="body2">
                 没有账号？点击注册
               </Link>
             </Grid>

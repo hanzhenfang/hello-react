@@ -1,19 +1,25 @@
-import React, { useState } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import React from 'react';
+import { useRoutes } from 'react-router-dom'
+import AllRoutes from './Routes'
+
 
 import './App.css'
-import Login from './Pages/Login';
-import Dashboard from './Pages/Dashboard';
 
 function App() {
-  const [ifLogin, setIfLogin] = useState("login")
+  const Routes = useRoutes(AllRoutes)
 
   return (
-    <Routes>
-      <Route path='/login' element={<Login setIfLogin={setIfLogin} />} />
-      <Route path='/home' element={<Dashboard />} />
-      <Route path='/' element={<Navigate relpace to={`/${ifLogin}`} />} />
-    </Routes>
+    <>
+      {/* <Routes>
+        <Route path='/login' element={<Login />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/' element={<Navigate replace to='/login' />} />
+      </Routes> */}
+
+
+      {Routes}
+    </>
+
   );
 }
 
