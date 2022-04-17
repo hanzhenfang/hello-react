@@ -2,7 +2,7 @@
 
 const USER_KEY = 'user_key'
 
-export default {
+const about_LocalStorage = {
     // 保存用户信息
     saveUser(user) {
         localStorage.setItem(USER_KEY, JSON.stringify(user))
@@ -16,3 +16,5 @@ export default {
         localStorage.removeItem(USER_KEY)
     }
 }
+
+export default about_LocalStorage;

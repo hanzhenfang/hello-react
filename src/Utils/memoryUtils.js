@@ -1,6 +1,8 @@
 
-export default {
+const userInfomation = {
     user: {
 
     }
-}
+};
+
+export default userInfomation

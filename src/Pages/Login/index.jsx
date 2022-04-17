@@ -2,7 +2,7 @@ import React from 'react';
 import { notification } from 'antd';
 import { useForm } from 'react-hook-form'
 import axios from 'axios';
-import { useNavigate, Link as RLink } from 'react-router-dom';
+import { useNavigate, Link as RLink, Navigate } from 'react-router-dom';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -24,9 +24,9 @@ import storageUtiles from '../../Utils/storageUtiles';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
-      {'PoweredBy © '}
+      {'PoweredByhanzhenFang © '}
       <Link color="inherit" href="https://mui.com/">      {/*页脚相关内容*/}
-        小方xxx待定平台
+        React后台管理系统
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -116,84 +116,89 @@ export default function Login(props) {
     })
   }
 
-  return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
-      <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
-        <Typography component="h1" variant="h3">
-          登陆页面
-        </Typography>
-        <form
-          className={classes.form}
-          onSubmit={handleSubmit(submit)}
-          noValidate
-        >
-          <TextField
-            id="userName"
-            label="用户名"
-            {...register("userName",//使用r-h-f自动注册name属性和input的value
-              {
-                required: "请输入用户名",
-                minLength: { value: 5, message: "用户名至少为5位" },
-                maxLength: { value: 6, message: "用户名最大为6个字符" },
-                pattern: { value: /^[a-z]+$/, message: "用户名必须为小写英文" }
-              })}
-            helperText={errors.userName?.message}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-            autoFocus
-          />
-
-          <TextField
-            label="Password"
-            type="password"
-            id="password"
-            {...register("passWord",//使用r-h-f自动注册name属性和input的value
-              {
-                required: "请先输入密码",
-                minLength: { value: 5, message: "密码至少为5位" },
-                maxLength: { value: 8, message: "密码最多为8位" },
-                pattern: { value: /^[a-z]+$/, message: "密码必须为小写英文" }
-              })}
-            helperText={errors.passWord?.message}
-            variant="outlined"
-            margin="normal"
-            fullWidth
-          />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="记住账号密码"
-          />
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className={classes.submit}
+  if (Object.keys(memoryUtils.user).length !== 0) {
+    return <Navigate replace to='/dashboard' />
+  }
+  else {
+    return (
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h3">
+            登陆页面
+          </Typography>
+          <form
+            className={classes.form}
+            onSubmit={handleSubmit(submit)}
+            noValidate
           >
-            登陆
-          </Button>
-          <Grid container>
-            {/* <Grid item xs>
+            <TextField
+              id="userName"
+              label="用户名"
+              {...register("userName",//使用r-h-f自动注册name属性和input的value
+                {
+                  required: "请输入用户名",
+                  minLength: { value: 5, message: "用户名至少为5位" },
+                  maxLength: { value: 6, message: "用户名最大为6个字符" },
+                  pattern: { value: /^[a-z]+$/, message: "用户名必须为小写英文" }
+                })}
+              helperText={errors.userName?.message}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              autoFocus
+            />
+
+            <TextField
+              label="Password"
+              type="password"
+              id="password"
+              {...register("passWord",//使用r-h-f自动注册name属性和input的value
+                {
+                  required: "请先输入密码",
+                  minLength: { value: 5, message: "密码至少为5位" },
+                  maxLength: { value: 8, message: "密码最多为8位" },
+                  pattern: { value: /^[a-z]+$/, message: "密码必须为小写英文" }
+                })}
+              helperText={errors.passWord?.message}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="记住账号密码"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              登陆
+            </Button>
+            <Grid container>
+              {/* <Grid item xs>
               <Link component={RLink} to='/' variant="body2">
                 忘记密码？
               </Link>
             </Grid> */}
-            <Grid item>
-              <Link component={RLink} to='/signin' variant="body2">
-                没有账号？点击注册
-              </Link>
+              <Grid item>
+                <Link component={RLink} to='/signin' variant="body2">
+                  没有账号？点击注册
+                </Link>
+              </Grid>
             </Grid>
-          </Grid>
-        </form>
-      </div>
-      <Box mt={8}>
-        <Copyright />
-      </Box>
-    </Container>
-  );
+          </form>
+        </div>
+        <Box mt={8}>
+          <Copyright />
+        </Box>
+      </Container>
+    );
+  }
 }

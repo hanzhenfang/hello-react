@@ -1,70 +1,90 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom'
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
+import Collapse from '@material-ui/core/Collapse';
+import List from '@material-ui/core/List';
+import StarBorder from '@material-ui/icons/StarBorder';
 
-export const mainListItems = (
-    <div>
-        <ListItem button>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Orders" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Customers" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reports" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <LayersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Integrations" />
-        </ListItem>
-    </div>
-);
+export default function MainListItems() {
+    const [open, setOpen] = useState(false)
 
-export const secondaryListItems = (
-    <div>
-        <ListSubheader inset>Saved reports</ListSubheader>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Current month" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Last quarter" />
-        </ListItem>
-        <ListItem button>
-            <ListItemIcon>
-                <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Year-end sale" />
-        </ListItem>
-    </div>
-);
+    const handleClick = () => {
+        setOpen(!open);
+    }
+
+    return (
+        <div>
+            <List
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Welcome
+                    </ListSubheader>
+                }
+            >
+                <ListItem component={NavLink} to='home' >
+                    <ListItemIcon>
+                        <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="首页" />
+                </ListItem>
+                <ListItem button onClick={handleClick}>
+                    <ListItemIcon>
+                        <DashboardIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="商品" />
+                </ListItem>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItem button >
+                            <ListItemIcon>
+                                <StarBorder />
+                            </ListItemIcon>
+                            <ListItemText primary="品类管理" />
+                        </ListItem>
+                    </List>
+                    <List component="div" disablePadding>
+                        <ListItem button >
+                            <ListItemIcon>
+                                <StarBorder />
+                            </ListItemIcon>
+                            <ListItemText primary="商品管理" />
+                        </ListItem>
+                    </List>
+                </Collapse>
+            </List>
+        </div>
+    );
+}
+
+export function SecondaryListItems() {
+    const [open, setOpen] = useState(false)
+
+    const handleClick = () => {
+        setOpen(!open);
+    }
+
+    return (
+        <div>
+            <ListItem button onClick={handleClick}>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="首页" />
+            </ListItem>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+                <List component="div" disablePadding>
+                    <ListItem button >
+                        <ListItemIcon>
+                            <StarBorder />
+                        </ListItemIcon>
+                        <ListItemText primary="Starred" />
+                    </ListItem>
+                </List>
+            </Collapse>
+        </div>
+    );
+}

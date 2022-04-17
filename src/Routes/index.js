@@ -1,10 +1,13 @@
+import { Navigate } from 'react-router-dom';
+
 import Login from '../Pages/Login';
 import Dashboard from '../Pages/Dashboard';
 import SignIn from '../Pages/SignIn'
+import Home from '../Pages/Home'
+import memoryUtils from '../Utils/memoryUtils';
 
-import { Navigate } from 'react-router-dom';
 
-export default [
+const routesList = [
     {
         path: '/login',
         element: <Login />,
@@ -12,16 +15,25 @@ export default [
     },
     {
         path: '/dashboard',
-        element: <Dashboard />
+        element: <Dashboard />,
+        children: [
+            {
+                path: 'home',
+                element: <Home />
+            }
+        ]
     },
     {
         path: '/',
-        element: <Navigate replace to='/login' />
+        element:
+            Object.keys(memoryUtils.user).length === 0 ?
+                <Navigate replace to='/login' /> :
+                <Navigate replace to='/dashboard' />
     },
     {
-
         path: 'signin',
         element: <SignIn />
-
     }
-]
+];
+
+export default routesList;
