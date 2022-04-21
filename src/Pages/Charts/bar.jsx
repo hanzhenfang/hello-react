@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Charts() {
+export default function Bar() {
   return (
     <div>Charts</div>
   )

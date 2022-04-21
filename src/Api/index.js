@@ -1,5 +1,5 @@
 //包含应用所有类型的接口请求函数
-// import Myajax from './ajax'
+import Myajax from './ajax'
 const proxy = require('http-proxy-middleware')
 
 

@@ -12,3 +12,4 @@ function Myajax(url, data = {}, methond = "GET") {
     }
 }
 
+export default Myajax
