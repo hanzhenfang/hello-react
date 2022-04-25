@@ -1,8 +1,6 @@
 
 const userInfomation = {
-    user: {
-
-    }
+    user: {}
 };
 
 export default userInfomation

@@ -67,19 +67,20 @@ const useStyles = makeStyles((theme) => ({
 // }
 
 export default function Login(props) {
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  const classes = useStyles()
-  const navigate = useNavigate()
+  const { register, handleSubmit, formState: { errors } } = useForm();
+  const classes = useStyles();
+  const navigate = useNavigate();
 
   const submit = (userInfo) => {
-    console.log(navigate)
     //可以有一个timeout参数来设置请求时间，如果超时修改promise的状态为reject
     axios.get('http://localhost:5500/server', { timeout: 3000 }).then(
       (response) => {
-        console.log(response)
-        const user = response.data.login
-        if (userInfo.userName === user.username
-          && userInfo.passWord === user.password) {
+        const user = response.data
+        const youCanLogin = user.find((userList) =>
+        (userList.userName === userInfo.userName &&
+          userList.passWord === userInfo.passWord))
+
+        if (youCanLogin) {
           notification['success']({
             message: "登陆成功",
             description: "如果喜欢该网页就推荐给你的朋友们吧～❤️",
@@ -91,7 +92,6 @@ export default function Login(props) {
           setTimeout(() => {
             navigate('/dashboard', { replace: true })
           }, 1000)
-
         }
         else {
           notification['error']({
@@ -108,12 +108,7 @@ export default function Login(props) {
         })
       }
 
-    ).then((a) => {
-      console.log(a)
-      return 3;  //上一个.then成功的话会返回一个reserve状态的promise对象，如果没有设置返回值，那么返回值默认上undifined
-    }).then((a) => {
-      console.log(a)
-    })
+    )
   }
 
   if (Object.keys(memoryUtils.user).length !== 0) {
@@ -142,8 +137,8 @@ export default function Login(props) {
                 {
                   required: "请输入用户名",
                   minLength: { value: 5, message: "用户名至少为5位" },
-                  maxLength: { value: 6, message: "用户名最大为6个字符" },
-                  pattern: { value: /^[a-z]+$/, message: "用户名必须为小写英文" }
+                  maxLength: { value: 12, message: "用户名最大为12个字符" },
+                  // pattern: { value: /^[a-z]+$/, message: "用户名必须为小写英文" }
                 })}
               helperText={errors.userName?.message}
               variant="outlined"
@@ -161,7 +156,7 @@ export default function Login(props) {
                   required: "请先输入密码",
                   minLength: { value: 5, message: "密码至少为5位" },
                   maxLength: { value: 8, message: "密码最多为8位" },
-                  pattern: { value: /^[a-z]+$/, message: "密码必须为小写英文" }
+                  // pattern: { value: /^[a-z]+$/, message: "密码必须为小写英文" }
                 })}
               helperText={errors.passWord?.message}
               variant="outlined"
@@ -202,3 +197,4 @@ export default function Login(props) {
     );
   }
 }
+

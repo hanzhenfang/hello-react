@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { hover } from '@testing-library/user-event/dist/hover';
 
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -63,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     },
     appBarSpacer: theme.mixins.toolbar,
     content: {
-        paddingTop: '60px',
+        paddingTop: '3em',
         display: 'flex',
         flexDirection: 'column',
         width: '100%',
@@ -71,10 +70,17 @@ const useStyles = makeStyles((theme) => ({
         overflow: 'auto',
         alignItems: 'center'
     },
+    // 下面是内容区域的样式
     container: {
         flex: 1,
         paddingTop: theme.spacing(4),
         paddingBottom: theme.spacing(4),
+    },
+
+    mainWrapper: {
+        border: '1px solid black',
+        height: '100%',
+        backgroundColor: 'pink',
     },
 
     fixedHeight: {
@@ -84,32 +90,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const useStyles1 = makeStyles({
-    root: {
-        backgroundColor: "blue",
-        '& main': {
-            color: "red",
-        },
-        '&: hover': {
-            color: "pink",
-        },
-        '&::after': {
-            content: "",
-            clear: "both",
-            display: "block",
-        }
-    }
-})
 
-
-
-export function Text() {
-    return (
-        <div>
-            style
-        </div>
-    )
-}
 
 
 export default useStyles

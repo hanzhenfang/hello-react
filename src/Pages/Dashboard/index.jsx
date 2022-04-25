@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom'
 import clsx from 'clsx';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -16,11 +16,13 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
-import MainListItems from './listItems';
 import storageUtiles from '../../Utils/storageUtiles';
+import MainListItems from './listItems';
 import memoryUtils from '../../Utils/memoryUtils';
 import useStyles from './style';
 import formatDate from '../../Utils/dateUtils';
+import siderBarList from '../../Config/siderBarList';
+import AlertDialog from '../../Components/dialog';
 
 const Copyright = () => {
   return (
@@ -35,38 +37,48 @@ const Copyright = () => {
   );
 }
 
-
-
-
-
-
 export default function Dashboard() {
   const classes = useStyles();
+  const path = useLocation().pathname.replace('/dashboard/', "")
   const [open, setOpen] = useState(true);
-  const [nowTime, setNowTime] = useState(() => formatDate())
+  const [nowTime, setNowTime] = useState(() => formatDate());
+  const [pageName, setPageName] = useState("首页");
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   const timeID = setTimeout(
-  //     () => {
-  //       setNowTime(formatDate())
-  //     }, 1000);
-  //   return () => {
-  //     clearTimeout(timeID)
-  //   }
-  // }, [nowTime])
+  const logOut = () => {
+    storageUtiles.removeUser(memoryUtils.user)
+    memoryUtils.user = {};
+    navigate('/login')
+  }
+
+  const findNowPageName = () => {
+    siderBarList.forEach(item => {
+      if (item.key === path) {
+        setPageName(item.title)
+      }
+      else if (item.children) {
+        item.children.forEach(items => {
+          if (items.key === path) {
+            setPageName(items.title)
+          }
+        })
+      }
+    })
+  }
 
   useEffect(() => {
-    const timeID = setInterval(
+    findNowPageName();
+  })
+
+  useEffect(() => {
+    const timeID = setTimeout(
       () => {
         setNowTime(formatDate())
       }, 1000);
     return () => {
-      clearInterval(timeID)
+      clearTimeout(timeID)
     }
-  }, [])
-
-
+  }, [nowTime])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -74,12 +86,6 @@ export default function Dashboard() {
   const handleDrawerClose = () => {
     setOpen(false);
   };
-
-  const logOut = () => {
-    storageUtiles.removeUser(memoryUtils.user)
-    memoryUtils.user = {};
-    navigate('/login')
-  }
 
   if (Object.keys(memoryUtils.user).length === 0) {
     return <Navigate replace to='/login' />
@@ -111,9 +117,9 @@ export default function Dashboard() {
               <div>
                 当前时间:{nowTime}
               </div>
-              <IconButton color="inherit" onClick={logOut}>
+              <AlertDialog onClick={logOut} >
                 退出登录
-              </IconButton>
+              </AlertDialog>
             </Toolbar>
           </AppBar>
           <Drawer
@@ -134,7 +140,8 @@ export default function Dashboard() {
           </Drawer>
           <main className={classes.content}>
             <Container maxWidth="lg" className={classes.container}>
-              <div>
+              <h1>当前目录是:{pageName}</h1>
+              <div className={classes.mainWrapper}>
                 <Outlet />
               </div>
             </Container>

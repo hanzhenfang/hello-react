@@ -16,7 +16,6 @@ export default function MainListItems() {
       <Menu
         mode="inline"
         selectedKeys={path}
-
         style={{ height: '100%', borderRight: 0 }}
       >
         {getSiderBarList(siderBarList)}
