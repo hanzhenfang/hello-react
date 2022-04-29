@@ -14,7 +14,7 @@ export const reqCategorys = (parentID) => Myajax(Base + '/category', { parentID 
 //实现向数据库增加内容
 export const reqAddCategorys = ({ categoryName, parentID }) => Myajax('', { categoryName, parentID }, "POST");
 
-const reqSubCategory = () => {
+const reqSubCategory = (parentID) => {
   return (axios.post("http://localhost:3000/subcategory", { parentID }))
 
 }
