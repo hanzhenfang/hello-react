@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require('body-parser')
 
+const productModel = require('../MongDB/Schema/productSchema')
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //链接数据库
@@ -96,7 +98,8 @@ app.post("/addcategory", (req, res) => {
 
 // 下面是约束二级级目录catagory集合,并且链接数据库的方法
 const subCategorySchema = new Schema({
-  name: []
+  name: [],
+  parentID: String
 })
 const subCategoryModel = mongoose.model('subcategorys', subCategorySchema)
 
@@ -135,7 +138,82 @@ app.get('/catagoryList', (request, response) => {
       response.send(data)
     }
   });
+});
+
+// 下面是一进来获取商品管理列表的请求
+
+app.all('/product/list', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  if (JSON.stringify(req.body) === "{}") {
+    productModel.find({}, (err, data) => {
+      if (err) {
+        console.log(err)
+      }
+      else {
+        res.send(data)
+      }
+    })
+  }
+  else {
+    //这里写添加数据的功能
+  }
 })
+
+app.all('/product/search', (req, res) => {
+  const { searchType, keyWord } = req.body;
+  console.log(req.body)
+  productModel.find({ [searchType]: { $regex: eval(`/${keyWord}/`) } }, (err, data) => {
+    if (err) {
+      res.send(err);
+      console.log("请求失败")
+    }
+    else {
+      res.send(data)
+      console.log("数据返回")
+    }
+  })
+})
+
+// 下面是修改商品上架还是下架的状态信息
+app.post('/product/updatestatus', (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  const { productID, productStatus } = req.body;
+  if (productStatus === 2) {
+    productModel.findByIdAndUpdate({ _id: [productID] }, { status: 1 }, (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(data)
+      }
+    })
+  }
+  else if (productStatus === 1) {
+    productModel.findByIdAndUpdate({ _id: [productID] }, { status: 2 }, (err, data) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(data)
+      }
+    })
+  }
+
+})
+
+//在----商品管理---页面添加新的商品，发送请求来获取商品分类的二级栏
+app.post('/subCategoryaaa', (req, res) => {
+  console.log(req.body)
+  const parentID = req.body.number
+  console.log(parentID)
+  subCategoryModel.findOne({ "parentID": [parentID] }, (err, data) => {
+    if (err) {
+      console.log(err)
+    }
+    else {
+      res.send(data)
+    }
+  })
+})
+
 // 切换到src文件夹，然后node express.js,然后启动服务器
 app.listen(5500, () => {
   console.log("服务器5500端口已经启动!!")

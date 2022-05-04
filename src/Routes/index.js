@@ -46,7 +46,7 @@ const routesList = [
         children: [
           {
             path: '/dashboard/product',
-            element: <Navigate to='home' replace />
+            element: <Navigate replace to='producthome' />
           },
           {
             path: 'addupdate',
@@ -57,7 +57,7 @@ const routesList = [
             element: <ProductDetial />
           },
           {
-            path: 'home',
+            path: 'producthome',
             element: <ProductHome />
           }
         ]

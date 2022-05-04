@@ -24,19 +24,6 @@ import formatDate from '../../Utils/dateUtils';
 import siderBarList from '../../Config/siderBarList';
 import AlertDialog from '../../Components/dialog';
 
-const Copyright = () => {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'poweredbyhanzhenFang © '}
-      <Link color="inherit" href="https://mui.com/">
-        React后台管理系统
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
 export default function Dashboard() {
   const classes = useStyles();
   const path = useLocation().pathname.replace('/dashboard/', "")
@@ -154,4 +141,17 @@ export default function Dashboard() {
       </>
     );
   }
+}
+
+const Copyright = () => {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'poweredbyhanzhenFang © '}
+      <Link color="inherit" href="https://mui.com/">
+        React后台管理系统
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
 }

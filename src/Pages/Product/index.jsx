@@ -1,10 +1,16 @@
 import React from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, Navigate } from 'react-router-dom'
 
+import './index.css'
 // 商品页面
 
 export default function Product() {
     return (
-        <div style={{ height: "100%" }}><Outlet /></div>
+        <>
+            <div className='root'>
+                <Outlet />
+            </div>
+        </>
+
     )
 }
